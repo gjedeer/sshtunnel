@@ -1,5 +1,7 @@
 package org.sshtunnel;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +14,7 @@ import org.sshtunnel.utils.Utils;
 
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Random;
@@ -122,9 +125,23 @@ public class DNSServer implements WrapServer {
     private volatile int threadNum = 0;
     private boolean inService = false;
     private Hashtable<String, DnsResponse> dnsCache = new Hashtable<String, DnsResponse>();
+    public static final String SERVICE_NAME = "org.sshtunnel.SSHTunnelService";
     /**
      * 内建自定义缓存
      */
+	public boolean isWorked(Context context, String service) {
+		ActivityManager myManager = (ActivityManager) context
+				.getSystemService(Context.ACTIVITY_SERVICE);
+		ArrayList<RunningServiceInfo> runningService = (ArrayList<RunningServiceInfo>) myManager
+				.getRunningServices(30);
+		for (int i = 0; i < runningService.size(); i++) {
+			if (runningService.get(i).service.getClassName().toString()
+					.equals(service)) {
+				return true;
+			}
+		}
+		return false;
+	}
     private Hashtable<String, String> orgCache = new Hashtable<String, String>();
     private String target = "8.8.8.8:53";
 
@@ -527,9 +544,11 @@ public class DNSServer implements WrapServer {
                 final DatagramPacket dnsq = new DatagramPacket(qbuffer,
                         qbuffer.length);
 
-                if (!settings.getBoolean("isRunning", false))
-                    break;
-
+                if (isWorked(context, SERVICE_NAME) == false){
+                	if (!settings.getBoolean("isRunning", false))
+                        break;
+                }
+                
                 srvSocket.receive(dnsq);
                 // 连接外部DNS进行解析。
 
