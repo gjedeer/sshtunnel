@@ -86,7 +86,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
 import com.ksmaze.android.preference.ListPreferenceMultiSelect;
 
 public class SSHTunnel extends PreferenceActivity implements
@@ -943,13 +942,11 @@ public class SSHTunnel extends PreferenceActivity implements
 	@Override
 	public void onStart() {
 		super.onStart();
-		FlurryAgent.onStartSession(this, "MBY4JL18FQK1DPEJ5Y39");
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 
 	private void recovery() {
