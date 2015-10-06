@@ -28,4 +28,5 @@ and type `ant` in the project directory.
 ## TODO
 * build [redsocks](https://github.com/gjedeer/sshtunnel/blob/master/assets/redsocks) from [source](http://darkk.net.ru/redsocks/)
 * upgrade SSH library to http://svn.svnkit.com/repos/3rdparty/com.trilead.ssh2/ ?
+* upgrade [bouncy castle files](https://github.com/gjedeer/sshtunnel/tree/master/src/com/trilead/ssh2/crypto) inside SSH library?
 * make it a reproducible build for f-droid (haha yeah right, i'll have time for this after i'm dead)
